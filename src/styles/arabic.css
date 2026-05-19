@@ -1,0 +1,340 @@
+/* =============================================================================
+ * Professional Markdown PDF Exporter — Arabic (RTL) print preset
+ * -----------------------------------------------------------------------------
+ * A4, right-to-left business document styling. Authored for Chromium's print
+ * engine (Chrome / Chromium / Edge), driven by puppeteer-core `page.pdf()`
+ * with `preferCSSPageSize: true`.
+ *
+ * Page numbers are produced by the `@bottom-center` margin box below. Modern
+ * Chromium renders this counter natively when printing with CSS page size.
+ *
+ * The document `<html dir="rtl">` attribute (set by the HTML builder) drives
+ * overall direction; the rules here mirror spacing, borders and alignment so
+ * the layout reads naturally for Arabic. Latin numerals and currency keep an
+ * isolated LTR run so amounts never reorder inside RTL text.
+ * ========================================================================== */
+
+/* --- Page geometry & footer page numbers ---------------------------------- */
+@page {
+  size: A4;
+  margin: 18mm 16mm;
+
+  @bottom-center {
+    content: counter(page) " / " counter(pages);
+    font-size: 10px;
+    color: #666;
+    /* Force LTR so the "page / total" counter is not visually reversed by
+     * the document's RTL direction (otherwise "1 / 4" displays as "4 / 1"). */
+    direction: ltr;
+  }
+}
+
+/* --- Design tokens -------------------------------------------------------- */
+:root {
+  --color-text: #1f2733;
+  --color-muted: #5b6571;
+  --color-heading: #11203b;
+  --color-accent: #1f4e8c;
+  --color-accent-soft: #e8eef7;
+  --color-border: #d6dbe2;
+  --color-rule: #c2cad4;
+  --color-code-bg: #f4f5f7;
+  --color-note-bg: #eef4fb;
+  --color-note-border: #1f4e8c;
+  --color-highlight-bg: #fff6e0;
+  --color-highlight-border: #d99a18;
+  /* Bundled Noto fonts come first so Arabic output is deterministic on every
+   * machine; system faces remain as fallbacks. The @font-face rules for the
+   * Noto families are embedded by the HTML builder. */
+  --font-body: "Noto Naskh Arabic", "Segoe UI", "Tahoma", "Dubai",
+    "Geeza Pro", "Arial", sans-serif;
+  --font-heading: "Noto Kufi Arabic", "Segoe UI Semibold", "Segoe UI",
+    "Tahoma", "Dubai", "Arial", sans-serif;
+  --font-mono: "Cascadia Mono", "SFMono-Regular", "Consolas", "Liberation Mono", monospace;
+}
+
+/* --- Base ----------------------------------------------------------------- */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 12pt;          /* Arabic script benefits from slightly larger text */
+  line-height: 1.9;          /* and a more generous line height */
+  color: var(--color-text);
+  direction: rtl;
+  text-align: right;
+}
+
+/* --- Headings ------------------------------------------------------------- */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  color: var(--color-heading);
+  line-height: 1.5;
+  margin: 1.4em 0 0.6em;
+  break-after: avoid;
+  page-break-after: avoid;
+}
+
+h1 {
+  font-size: 23pt;
+  margin-top: 0;
+  padding-bottom: 0.25em;
+  border-bottom: 2px solid var(--color-accent);
+}
+
+h2 {
+  font-size: 17pt;
+  padding-bottom: 0.2em;
+  border-bottom: 1px solid var(--color-border);
+}
+
+h3 { font-size: 14pt; }
+h4 { font-size: 12.5pt; }
+h5, h6 { font-size: 12pt; color: var(--color-muted); }
+
+/* --- Paragraphs & inline text -------------------------------------------- */
+p {
+  margin: 0 0 0.85em;
+  orphans: 3;
+  widows: 3;
+}
+
+strong { font-weight: 700; }
+em { font-style: normal; font-weight: 600; } /* italics read poorly in Arabic */
+small { font-size: 0.85em; color: var(--color-muted); }
+
+a {
+  color: var(--color-accent);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(31, 78, 140, 0.35);
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--color-rule);
+  margin: 1.6em 0;
+}
+
+/* --- Lists ---------------------------------------------------------------- */
+ul, ol {
+  margin: 0 0 0.85em;
+  padding-right: 1.6em;
+  padding-left: 0;
+}
+
+li { margin: 0.25em 0; }
+li > ul, li > ol { margin-bottom: 0; }
+
+/* --- Blockquote ----------------------------------------------------------- */
+blockquote {
+  margin: 1em 0;
+  padding: 0.6em 1.1em;
+  border-right: 4px solid var(--color-accent);
+  border-left: 0;
+  background: var(--color-accent-soft);
+  color: var(--color-muted);
+}
+
+blockquote p:last-child { margin-bottom: 0; }
+
+/* --- Code ----------------------------------------------------------------- */
+/* Code is inherently LTR — isolate it so it never reorders inside RTL text. */
+code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  background: var(--color-code-bg);
+  padding: 0.1em 0.35em;
+  border-radius: 3px;
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+pre {
+  background: var(--color-code-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 5px;
+  padding: 0.9em 1.1em;
+  overflow-x: auto;
+  font-size: 0.85em;
+  line-height: 1.45;
+  direction: ltr;
+  text-align: left;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  font-size: inherit;
+}
+
+/* --- Tables --------------------------------------------------------------- */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1em 0 1.2em;
+  font-size: 11pt;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+thead { display: table-header-group; }
+
+th, td {
+  border: 1px solid var(--color-border);
+  padding: 7px 10px;
+  text-align: right;
+  vertical-align: top;
+}
+
+th {
+  background: var(--color-accent);
+  color: #fff;
+  font-weight: 600;
+}
+
+/* Alternating row stripes */
+tbody tr:nth-child(even) {
+  background: #f5f7fa;
+}
+
+/* --- Images --------------------------------------------------------------- */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* --- Cover page ----------------------------------------------------------- */
+.cover-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 247mm; /* A4 height minus top + bottom @page margins */
+  break-after: page;
+  page-break-after: always;
+}
+
+.cover-page h1 {
+  font-size: 31pt;
+  border: 0;
+  margin: 0 0 0.3em;
+}
+
+.cover-page .document-subtitle {
+  font-size: 15pt;
+  color: var(--color-muted);
+  margin: 0 0 1.2em;
+}
+
+/* --- Document header band ------------------------------------------------- */
+.document-header {
+  border-bottom: 3px solid var(--color-accent);
+  padding-bottom: 0.8em;
+  margin-bottom: 1.6em;
+}
+
+.document-header h1 { border: 0; margin-bottom: 0.15em; }
+
+.document-header .document-subtitle {
+  color: var(--color-muted);
+  font-size: 13pt;
+  margin: 0;
+}
+
+/* --- Note & highlight boxes ----------------------------------------------- */
+.note-box,
+.highlight-box {
+  margin: 1.1em 0;
+  padding: 0.85em 1.1em;
+  border-radius: 5px;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.note-box {
+  background: var(--color-note-bg);
+  border-right: 4px solid var(--color-note-border);
+  border-left: 0;
+}
+
+.highlight-box {
+  background: var(--color-highlight-bg);
+  border-right: 4px solid var(--color-highlight-border);
+  border-left: 0;
+}
+
+.note-box p:last-child,
+.highlight-box p:last-child {
+  margin-bottom: 0;
+}
+
+/* --- Status badge --------------------------------------------------------- */
+.status-badge {
+  display: inline-block;
+  padding: 0.18em 0.7em;
+  border-radius: 999px;
+  font-size: 9pt;
+  font-weight: 700;
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+}
+
+.status-badge.is-draft   { background: #fde7e7; color: #b3261e; }
+.status-badge.is-final   { background: #e6f4ea; color: #1e7a34; }
+.status-badge.is-review  { background: #fff6e0; color: #9a6b00; }
+
+/* --- Signature area ------------------------------------------------------- */
+.signature-box {
+  display: flex;
+  justify-content: space-between;
+  gap: 2.5em;
+  margin-top: 2.8em;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.signature-item {
+  flex: 1;
+  padding-top: 0.5em;
+  border-top: 1px solid var(--color-text);
+  text-align: center;
+  font-size: 11pt;
+  color: var(--color-muted);
+}
+
+/* --- Numbers & currency --------------------------------------------------- */
+/* Keep Latin numerals and currency as an isolated LTR run so amounts such as
+ * "1,250.00 SAR" never visually reorder when surrounded by RTL Arabic text. */
+.price,
+.currency,
+.number {
+  font-variant-numeric: tabular-nums;
+  unicode-bidi: isolate;
+  direction: ltr;
+  white-space: nowrap;
+}
+
+.price { font-weight: 700; color: var(--color-heading); }
+
+/* --- Page-break helpers --------------------------------------------------- */
+.page-break {
+  break-after: page;
+  page-break-after: always;
+  height: 0;
+}
+
+.keep-together {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}

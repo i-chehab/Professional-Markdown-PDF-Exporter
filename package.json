@@ -1,0 +1,147 @@
+{
+  "name": "professional-markdown-pdf-exporter",
+  "displayName": "Professional Markdown PDF Exporter",
+  "description": "Export Markdown files to polished Arabic RTL or English LTR A4 PDFs directly from VS Code.",
+  "version": "0.2.0",
+  "publisher": "i-chehab",
+  "author": {
+    "name": "Ibrahim Chehab",
+    "email": "ibrahim@chehab.tech"
+  },
+  "license": "MIT",
+  "icon": "media/icon.png",
+  "homepage": "https://github.com/i-chehab/professional-markdown-pdf-exporter#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/i-chehab/professional-markdown-pdf-exporter.git"
+  },
+  "bugs": {
+    "url": "https://github.com/i-chehab/professional-markdown-pdf-exporter/issues"
+  },
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other",
+    "Formatters"
+  ],
+  "keywords": [
+    "markdown",
+    "pdf",
+    "export",
+    "arabic",
+    "rtl",
+    "english",
+    "document",
+    "print",
+    "business documents",
+    "reports"
+  ],
+  "main": "./out/extension.js",
+  "activationEvents": [],
+  "contributes": {
+    "commands": [
+      {
+        "command": "professionalMarkdownPdf.exportPdf",
+        "title": "Export PDF...",
+        "category": "Markdown PDF"
+      },
+      {
+        "command": "professionalMarkdownPdf.exportArabicPdf",
+        "title": "Export as Arabic PDF",
+        "category": "Markdown PDF"
+      },
+      {
+        "command": "professionalMarkdownPdf.exportEnglishPdf",
+        "title": "Export as English PDF",
+        "category": "Markdown PDF"
+      }
+    ],
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "professionalMarkdownPdf.exportPdf",
+          "when": "resourceLangId == markdown"
+        },
+        {
+          "command": "professionalMarkdownPdf.exportArabicPdf",
+          "when": "resourceLangId == markdown"
+        },
+        {
+          "command": "professionalMarkdownPdf.exportEnglishPdf",
+          "when": "resourceLangId == markdown"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "professionalMarkdownPdf.exportPdf",
+          "when": "resourceExtname == .md || resourceExtname == .markdown",
+          "group": "navigation@99"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "professionalMarkdownPdf.exportPdf",
+          "when": "resourceLangId == markdown",
+          "group": "navigation@99"
+        }
+      ],
+      "editor/title/context": [
+        {
+          "command": "professionalMarkdownPdf.exportPdf",
+          "when": "resourceLangId == markdown",
+          "group": "navigation@99"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Professional Markdown PDF Exporter",
+      "properties": {
+        "professionalMarkdownPdf.browserExecutablePath": {
+          "type": "string",
+          "default": "",
+          "description": "Optional custom path to Chrome, Chromium, or Microsoft Edge executable. If empty, the extension attempts automatic detection."
+        },
+        "professionalMarkdownPdf.openAfterExport": {
+          "type": "boolean",
+          "default": true,
+          "description": "Open the generated PDF after a successful export."
+        },
+        "professionalMarkdownPdf.outputMode": {
+          "type": "string",
+          "enum": [
+            "sameFolder"
+          ],
+          "default": "sameFolder",
+          "description": "Where the generated PDF file is saved. Version 1 supports saving beside the Markdown file."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "lint": "eslint src --ext .ts",
+    "test": "node ./out/test/runUnitTests.js",
+    "pretest": "npm run compile",
+    "vscode:prepublish": "npm run compile",
+    "package": "vsce package"
+  },
+  "dependencies": {
+    "markdown-it": "^14.1.0",
+    "markdown-it-highlightjs": "^4.3.0",
+    "puppeteer-core": "^23.11.1"
+  },
+  "devDependencies": {
+    "@fontsource/noto-kufi-arabic": "^5.2.9",
+    "@fontsource/noto-naskh-arabic": "^5.2.11",
+    "@types/markdown-it": "^14.1.2",
+    "@types/node": "^20.14.0",
+    "@types/vscode": "^1.85.0",
+    "@typescript-eslint/eslint-plugin": "^7.18.0",
+    "@typescript-eslint/parser": "^7.18.0",
+    "@vscode/vsce": "^3.2.1",
+    "eslint": "^8.57.0",
+    "typescript": "^5.5.4"
+  }
+}

@@ -1,0 +1,24 @@
+# Source — only the compiled output ships...
+src/**
+
+# ...except the CSS presets, which are read from disk at runtime.
+!src/styles/**
+
+test/**
+scripts/**
+.vscode/**
+node_modules/.cache/**
+
+# Config & tooling
+.eslintrc.json
+tsconfig.json
+.gitignore
+.vscodeignore
+**/*.map
+**/*.ts
+
+# Project meta not needed in the package
+Prompt.md
+.github/**
+
+# Keep: out/**, src/styles/**, media/**, README.md, CHANGELOG.md, LICENSE, package.json

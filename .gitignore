@@ -1,0 +1,9 @@
+node_modules/
+out/
+*.vsix
+.DS_Store
+*.log
+
+# Generated PDFs (test exports, ROADMAP.pdf, etc.) and temp HTML
+*.pdf
+test/sample-documents/*.html
