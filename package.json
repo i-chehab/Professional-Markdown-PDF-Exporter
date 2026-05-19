@@ -3,20 +3,20 @@
   "displayName": "Professional Markdown PDF Exporter",
   "description": "Export Markdown files to polished Arabic RTL or English LTR A4 PDFs directly from VS Code.",
   "version": "0.2.0",
-  "publisher": "i-chehab",
+  "publisher": "iyc",
   "author": {
     "name": "Ibrahim Chehab",
     "email": "ibrahim@chehab.tech"
   },
   "license": "MIT",
   "icon": "media/icon.png",
-  "homepage": "https://github.com/i-chehab/professional-markdown-pdf-exporter#readme",
+  "homepage": "https://github.com/iyc-global/professional-markdown-pdf-exporter#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/i-chehab/professional-markdown-pdf-exporter.git"
+    "url": "https://github.com/iyc-global/professional-markdown-pdf-exporter.git"
   },
   "bugs": {
-    "url": "https://github.com/i-chehab/professional-markdown-pdf-exporter/issues"
+    "url": "https://github.com/iyc-global/professional-markdown-pdf-exporter/issues"
   },
   "engines": {
     "vscode": "^1.85.0"
